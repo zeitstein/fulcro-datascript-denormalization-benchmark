@@ -1,0 +1,27 @@
+{:deps     {:aliases [:dev]}
+ :dev-http {8000 "resources/public"}
+ :builds   {:main
+            {:target     :browser
+             :output-dir "resources/public/js/main"
+             :asset-path "/js/main"
+             :modules    {:main {:init-fn app.client/init
+                                 :entries [app.client]}}
+             :devtools   {:after-load app.client/refresh
+                          :preloads   [com.fulcrologic.fulcro.inspect.preload
+                                       com.fulcrologic.fulcro.inspect.dom-picker-preload]}}
+
+            :performance-dev
+            {:target           :browser
+             :output-dir       "resources/public/js/main"
+             :asset-path       "/js/main"
+             :js-options       {:ignore-asset-requires true
+                                :resolve               {"react-dom" {:target  :npm
+                                                                     :require "react-dom/cjs/react-dom.production.min.js"}
+                                                        "react"     {:target  :npm
+                                                                     :require "react/cjs/react.production.min.js"}}}
+             :modules          {:main {:init-fn app.client/init
+                                       :entries [app.client]}}
+             :devtools         {:after-load app.client/refresh
+                                :preloads   [#_app.development-preload]}
+             :compiler-options {:closure-defines {'goog.DEBUG false}}}}}
+
